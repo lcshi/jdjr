@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.UserDao">
+    <resultMap id="UserDo" type="model.User" autoMapping="true">
+        <result property="code" column="usercode"/>
+        <result property="name" column="username"/>
+    </resultMap>
+
+    <select id="GetUser" parameterType="User" resultMap="UserDo">
+        SELECT  * from userinfo
+    </select>
+    <insert id="InsertUser" parameterType="User">
+        insert into userinfo(
+        usercode,
+        username)
+        values
+        (
+        #{code},
+        #{name})
+    </insert>
+    <update id="UpdateUser" parameterType="User">
+        UPDATE  userinfo
+        set usercode=#{code},
+            username=#{name}
+        WHERE usercode=#{code}
+    </update>
+    <delete id="DeleteUser" parameterType="User">
+        DELETE  FROM  userinfo
+        WHERE  usercode=#{code}
+    </delete>
+
+
+
+
+</mapper>

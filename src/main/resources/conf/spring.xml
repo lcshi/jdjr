@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+       <!-- 引入jdbc配置文件 -->
+       <context:property-placeholder location="classpath:conf/jdbc.properties"/>
+       <!-- 扫描文件（自动注入services） -->
+       <context:component-scan base-package="service"/>
+
+       <!--============================== Quartz 动态任务开发  =====================================-->
+       <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"/>
+
+       <!--============================== Quartz 配置开发方式  =====================================-->
+       <!-- Job 类 -->
+       <!--<bean id="SpringQtzJob" class="job.SpringQtz" />-->
+       <!-- 目标bean和bean中的方法 -->
+       <!--<bean id="SpringQtzMethod"  class="org.springframework.scheduling.Common.quartz.MethodInvokingJobDetailFactoryBean">-->
+              <!--<property name="targetObject">-->
+                     <!--<ref bean="SpringQtzJob"/>-->
+              <!--</property>-->
+              <!--<property name="targetMethod">-->
+                    <!--<value>execute</value>-->
+              <!--</property>-->
+       <!--</bean>-->
+
+       <!-- 调度器 -->
+       <!--<bean id="CronTriggerBean" class="org.springframework.scheduling.Common.quartz.CronTriggerFactoryBean">-->
+              <!--<property name="jobDetail"  ref="SpringQtzMethod"/>-->
+              <!--<property name="cronExpression" value="0/5 * * * * ?"/>-->
+       <!--</bean>-->
+
+       <!--<bean id="SpringQtzJob2" class="job.SpringQtz2"/>-->
+       <!--<bean id="SpringQtzMethod2" class="org.springframework.scheduling.Common.quartz.MethodInvokingJobDetailFactoryBean">-->
+              <!--<property name="targetObject" ref="SpringQtzJob2"/>-->
+              <!--<property name="targetMethod" value="sayHello"/>-->
+       <!--</bean>-->
+       <!--<bean name="CronTriggerBean2" class="org.springframework.scheduling.Common.quartz.CronTriggerFactoryBean">-->
+              <!--<property name="jobDetail" ref="SpringQtzMethod2"/>-->
+              <!--<property name="cronExpression" value="0/5 * * * * ?"/>-->
+       <!--</bean>-->
+
+       <!-- 调度工厂 -->
+       <!--<bean id="SpringJobSchedulerFactoryBean" class="org.springframework.scheduling.Common.quartz.SchedulerFactoryBean">-->
+              <!--<property name="triggers">-->
+                     <!--<list>-->
+                            <!--<ref bean="CronTriggerBean"/>-->
+                            <!--<ref bean="CronTriggerBean2"/>-->
+                     <!--</list>-->
+              <!--</property>-->
+       <!--</bean>-->
+</beans>

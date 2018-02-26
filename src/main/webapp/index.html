@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/jquery.js"></script>
+    <script>
+
+        $.fn.serializeObject = function()
+        {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+        $(function () {
+            //查询
+            $("#btnSearch").click(function () {
+                $("#list").html("111");
+                $.ajax({
+                    type: "GET",
+                    url: "/api/user/11",
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result != undefined) {
+                            if (result.data != undefined) {
+                                var count = result.data.length;
+                                var strList = "";
+                                while (count > 0) {
+                                    var obj = result.data[count - 1];
+                                    if (obj != null) {
+
+                                        strList += count + "、" + obj.code + "  :  " + obj.name + "</br>";
+                                    }
+                                    count--;
+                                }
+                                $("#list").html(strList);
+                            }
+                        }
+
+                    }
+                });
+            });
+
+            //添加
+            $("#btnAdd").click(function(){
+                var data=$("#frmAdd").serializeObject();
+                var saveDataAry=[];
+                var data1={code:465,name:'张三'};
+                var data2={"code":"ququ","name":"gr"};
+                saveDataAry.push(data1);
+                saveDataAry.push(data2);
+
+                $.ajax({
+                    type: "POST",
+                    url:"/api/user",
+                    //data:data,
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType:"json",
+                    success:function(result){
+                        if(result!=undefined)
+                        {
+                            alert("Add OK");
+                        }
+                    }
+                });
+            });
+
+            //修改
+            $("#btnUpdate").click(function(){
+                var data=$("#frmUpdate").serializeObject();
+                $.ajax({
+                    type: "PUT",
+                    url:"/api/user",
+                    //data:data,
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType:"json",
+                    success:function(result){
+                        if(result!=undefined)
+                        {
+                            alert("UPDATE OK");
+                        }
+                    }
+                });
+            });
+            //删除
+            $("#btnDelete").click(function(){
+                var code=$("#txtDelete").val();
+                $.ajax({
+                    type: "DELETE",
+                    url:"/api/user/"+code,
+                    contentType: 'application/json',
+                    dataType:"json",
+                    success:function(result){
+                        if(result!=undefined)
+                        {
+                            alert("DELETE OK");
+                        }
+                    }
+                });
+            });
+
+            //初始化job
+            $("#btnInitJob").click(function(){
+                $.ajax({
+                    type: "GET",
+                    url:"/api/job",
+                    contentType: 'application/json',
+                    dataType:"json",
+                    success:function(result){
+                        if(result!=undefined)
+                        {
+                            alert("Job init OK");
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div>HTML main</div>
+QUERY:
+<div style="border-bottom: 1px solid black;padding:10px;">
+    <div id="list"></div>
+    <input id="btnSearch" type="button" value="查询"/>
+</div>
+ADD:
+<div style="border-bottom: 1px solid black;padding:10px;">
+    <form id="frmAdd" method="post" action="api/user" >
+        <input type="text" name="code"/>
+        <input type="text" name="name"/>
+        <input id="btnAdd" type="button" value="添加"/>
+    </form>
+</div>
+UPDATE:
+<div style="border-bottom: 1px solid black;padding:10px;">
+    <form id="frmUpdate"  action="api/user" >
+        <input type="text" name="code"/>
+        <input type="text" name="name"/>
+        <input id="btnUpdate" type="button" value="修改"/>
+    </form>
+</div>
+DELETE:
+<div style="border-bottom: 1px solid black;padding:10px;">
+<input id="txtDelete" type="text" name="name"/>
+<input id="btnDelete" type="button" value="删除"/>
+</div>
+
+
+Job init:
+<div style="border-bottom: 1px solid black;padding:10px;">
+    <input id="btnInitJob" type="button" value="初始化Job"/>
+</div>
+</body>
+</html>
